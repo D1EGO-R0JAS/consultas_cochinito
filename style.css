@@ -1,0 +1,16 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.consulta-1, .consulta-2, .consulta-21{
+    margin: 2% 2%;
+}
+table{
+    border: 1px black solid;
+    background-color: #fefbe9;
+}
+td{
+    border: 1px black solid;
+    padding: 5px;
+}

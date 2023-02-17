@@ -1,0 +1,35 @@
+Lo que se Logro Hacer:
+
+    Primer consulta es: Cuantos Ahorros en total hay por cada grupo, es decir el monto que hay.
+    Segunda consulta general : Cuantos prestamos se han realizado en el grupo y el monto total.
+    Segunda Consulta Individual: saber por individuo con su nombre fecha de realizacion del prestamo, el monto, el grupo y la frecuencia de pago y a cuantas cuotas.
+
+Lo que Falta Por Hacer:
+
+    Falta realizar la tercer consulta, donde se ve el id de la transaccion, el id y nombre del usuario, las cuotas a la que mando el prestamo y las cuotas que ha pagado. No se ha podido relizar debido a que es necesario dar funcionalidad a los botones de aceptacion de prestamo para que funciona la tabla loan, la cual permite realizar la consulta faltante.
+
+Los querys de cada consulta:
+
+    -- uno completo
+    use cochinitoapp;
+    SELECT grupos.group_name, SUM(amount_user_group.amount_deposited) as total
+    from amount_user_group
+    join grupos on amount_user_group.group_id = grupos.id
+    group by grupos.group_name;
+
+    -- dos general
+    use cochinitoapp;
+    SELECT grupos.group_name, COUNT(transaction.transaction_name) as prestamos, SUM(operation.value) as monto
+    from grupos
+    join operation ON grupos.id = operation.group_id
+    join transaction ON transaction.id = operation.transaction_id AND transaction.transaction_name = 'loan'
+    group by grupos.group_name;
+
+    -- dos por individuo
+    use cochinitoapp;
+    SELECT u.user_name, o.transaction_date, o.value, g.group_name, o.payment_frequency, o.consecutive, t.transaction_name
+    from user u
+    join operation o ON u.id = o.user_id
+    join grupos g ON o.group_id = g.id
+    join transaction t ON o.transaction_id = t.id
+    where t.transaction_name = 'loan';
